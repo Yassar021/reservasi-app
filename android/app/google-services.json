@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "405833771525",
+    "firebase_url": "https://reservapp-5ecc8.firebaseio.com",
+    "project_id": "reservapp-5ecc8",
+    "storage_bucket": "reservapp-5ecc8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:405833771525:android:1553121010ae6cde324a6c",
+        "android_client_info": {
+          "package_name": "com.example.reservasi_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "405833771525-vnf551h6plf32ib49vg74h40ch616pcb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPNhahpdE9dRWajfBKSWIaBIXTUptrA6I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "405833771525-vnf551h6plf32ib49vg74h40ch616pcb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

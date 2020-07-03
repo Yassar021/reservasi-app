@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:reservasi_app/pesan_workspace.dart';
 import 'package:reservasi_app/shared/theme.dart';
 
+// ignore: must_be_immutable
 class DetailHomePage extends StatelessWidget {
+  Map data;
+  String token;
+
+  DetailHomePage({this.data, this.token});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +28,7 @@ class DetailHomePage extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, '/mainPage');
+                            Navigator.pop(context);
                           },
                           child: Icon(
                             Icons.arrow_back,
@@ -33,22 +40,23 @@ class DetailHomePage extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  child: Text("Hello Workspace",
+                  margin: EdgeInsets.only(top: 60, bottom: 30),
+                  child: Text(data["nama"],
                       style: blackTextFont.copyWith(
                         fontSize: 22,
                         fontWeight: FontWeight.w600,
                       )),
                 ),
-                Container(
-                  // color: Colors.black,
-                  height: 250,
-                  width: 250,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      image: DecorationImage(
-                          image: AssetImage("assets/ic_tickets.png"),
-                          fit: BoxFit.cover)),
-                ),
+                // Container(
+                //   // color: Colors.black,
+                //   height: 250,
+                //   width: 250,
+                //   decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(20),
+                //       image: DecorationImage(
+                //           image: AssetImage("assets/ic_tickets.png"),
+                //           fit: BoxFit.cover)),
+                // ),
                 SizedBox(height: 16),
                 Column(
                   children: <Widget>[
@@ -74,31 +82,7 @@ class DetailHomePage extends StatelessWidget {
                       children: <Widget>[
                         Icon(Icons.location_on),
                         Text(
-                          "jl. mangga no 28",
-                          style: blackTextFont.copyWith(fontSize: 14),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Icon(Icons.work),
-                        Text(
-                          "4 Ruangan",
-                          style: blackTextFont.copyWith(fontSize: 14),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Icon(Icons.timer),
-                        Text(
-                          "08:00 - 17:00",
+                          data["alamat"],
                           style: blackTextFont.copyWith(fontSize: 14),
                         )
                       ],
@@ -110,7 +94,7 @@ class DetailHomePage extends StatelessWidget {
                       children: <Widget>[
                         Icon(Icons.monetization_on),
                         Text(
-                          "50. 000",
+                          data["harga"].toString(),
                           style: blackTextFont.copyWith(fontSize: 14),
                         )
                       ],
@@ -122,7 +106,7 @@ class DetailHomePage extends StatelessWidget {
                       children: <Widget>[
                         Icon(Icons.call),
                         Text(
-                          "085489345999",
+                          data["telp"],
                           style: blackTextFont.copyWith(fontSize: 14),
                         )
                       ],
@@ -136,16 +120,24 @@ class DetailHomePage extends StatelessWidget {
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: Colors.green[400],
+                            color: (data["status"] == 0)
+                                ? Colors.green[400]
+                                : Colors.red[400],
                           ),
                           padding: EdgeInsets.all(10),
-                          child: Text(
-                            "Tersedia",
-                            style: whiteTextFont.copyWith(
-                              fontSize: 14,
-                              // backgroundColor: Colors.green[400],
-                            ),
-                          ),
+                          child: (data["status"] == 0)
+                              ? Text("Tersedia",
+                                  style: whiteTextFont.copyWith(
+                                    fontSize: 14,
+                                    // backgroundColor: Colors.green[400],
+                                  ))
+                              : Text(
+                                  "Dibooking",
+                                  style: whiteTextFont.copyWith(
+                                    fontSize: 14,
+                                    // backgroundColor: Colors.green[400],
+                                  ),
+                                ),
                         )
                       ],
                     ),
@@ -166,7 +158,13 @@ class DetailHomePage extends StatelessWidget {
                       ),
                       color: mainColor,
                       onPressed: () {
-                        Navigator.pushNamed(context, '/pesanWorkspace');
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PesanWorkspace(
+                                      id: data["id"],
+                                      token: this.token,
+                                    )));
                       },
                     ),
                   ),

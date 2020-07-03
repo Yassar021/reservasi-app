@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reservasi_app/detail_home_page.dart';
 import 'package:reservasi_app/edit_profile.dart';
-import 'package:reservasi_app/main_page.dart';
-import 'package:reservasi_app/pesan_workspace.dart';
 import 'package:reservasi_app/sign_in_page.dart';
 import 'package:reservasi_app/sign_up_page.dart';
 import 'package:reservasi_app/splash_page.dart';
@@ -11,6 +8,7 @@ void main() {
   runApp(MyApp());
 }
 
+// ignore: must_be_immutable
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -22,9 +20,6 @@ class MyApp extends StatelessWidget {
         '/splashScreen': (BuildContext context) => new SplashPage(),
         '/signInPage': (BuildContext context) => new SignInPage(),
         '/signUpPage': (BuildContext context) => new SignUpPage(),
-        '/mainPage': (BuildContext context) => new MainPage(),
-        '/detailPage': (BuildContext context) => new DetailHomePage(),
-        '/pesanWorkspace': (BuildContext context) => new PesanWorkspace(),
         '/editProfile': (BuildContext context) => new EditProfile()
       },
       theme: ThemeData(

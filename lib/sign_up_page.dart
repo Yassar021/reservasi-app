@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reservasi_app/services/api.dart';
 import 'package:reservasi_app/shared/theme.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -7,10 +8,14 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  ApiService apiService = ApiService();
+
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController genderController = TextEditingController();
+  TextEditingController alamatController = TextEditingController();
+  TextEditingController telpController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController retypePasswordController = TextEditingController();
 
   // @override
   // void initState() {
@@ -19,6 +24,8 @@ class _SignUpPageState extends State<SignUpPage> {
   //   nameController.text = widget.registrationData.name;
   //   emailController.text = widget.registrationData.email;
   // }
+
+  bool proses = false;
 
   @override
   Widget build(BuildContext context) {
@@ -81,13 +88,30 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   SizedBox(height: 16),
                   TextField(
-                    controller: passwordController,
-                    obscureText: true,
+                    controller: genderController,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10)),
                         labelText: "Gender",
                         hintText: "Gender"),
+                  ),
+                  SizedBox(height: 16),
+                  TextField(
+                    controller: alamatController,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        labelText: "Alamat",
+                        hintText: "Alamat"),
+                  ),
+                  SizedBox(height: 16),
+                  TextField(
+                    controller: telpController,
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        labelText: "Telpon",
+                        hintText: "Telpon"),
                   ),
                   SizedBox(height: 16),
                   TextField(
@@ -100,18 +124,6 @@ class _SignUpPageState extends State<SignUpPage> {
                         hintText: "Password"),
                   ),
                   SizedBox(
-                    height: 16,
-                  ),
-                  TextField(
-                    controller: retypePasswordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        labelText: "Confirm Password",
-                        hintText: "Confirm Password"),
-                  ),
-                  SizedBox(
                     height: 20,
                   ),
                   Center(
@@ -120,13 +132,62 @@ class _SignUpPageState extends State<SignUpPage> {
                       height: 46,
                       margin: EdgeInsets.only(top: 10, bottom: 10),
                       child: RaisedButton(
-                        child: Text(
-                          " Daftar ",
-                          style: whiteTextFont.copyWith(fontSize: 16),
-                        ),
+                        child: proses
+                            ? CircularProgressIndicator()
+                            : Text(
+                                " Daftar ",
+                                style: whiteTextFont.copyWith(fontSize: 16),
+                              ),
                         color: mainColor,
                         onPressed: () {
-                          Navigator.pushNamed(context, '/signInPage');
+                          setState(() {
+                            proses = true;
+                          });
+                          apiService
+                              .register(
+                                  emailController.text,
+                                  passwordController.text,
+                                  nameController.text,
+                                  genderController.text,
+                                  alamatController.text,
+                                  telpController.text)
+                              .then((value) {
+                            setState(() {
+                              proses = false;
+                            });
+                            if (value["error"]) {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text("Opps"),
+                                  content: SingleChildScrollView(
+                                    child: ListBody(
+                                      children: <Widget>[
+                                        Text(value["message"] +
+                                            ", periksa data!"),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text("Selamat"),
+                                  content: SingleChildScrollView(
+                                    child: ListBody(
+                                      children: <Widget>[
+                                        Text(value["message"]),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                              Navigator.pushReplacementNamed(
+                                  context, '/signInPage');
+                            }
+                          });
                         },
                       ),
                     ),

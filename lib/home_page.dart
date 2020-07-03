@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:reservasi_app/detail_home_page.dart';
 import 'package:reservasi_app/shared/theme.dart';
 
+// ignore: must_be_immutable
 class HomePage extends StatelessWidget {
+  List data;
+  String token;
+
+  HomePage({this.data, this.token});
+
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: <Widget>[
-        SizedBox(
-          height: 20,
-        ),
-        Center(
+    return ListView.builder(
+      itemCount: data.length,
+      itemBuilder: (context, index) {
+        return Center(
           child: Container(
+            margin: EdgeInsets.only(top: 10),
             width: 320,
             // height: 50,
             decoration: BoxDecoration(
@@ -18,34 +24,40 @@ class HomePage extends StatelessWidget {
               borderRadius: BorderRadius.circular(5),
             ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 FlatButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/detailPage');
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DetailHomePage(
+                                  data: data[index],
+                                  token: this.token,
+                                )));
                   },
                   child: Container(
-                    width: 150,
                     height: 150,
                     child: Container(
-                        margin: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            image: DecorationImage(
-                                image: AssetImage("assets/ic_tickets.png"),
-                                fit: BoxFit.cover),
-                            borderRadius: BorderRadius.circular(5))),
+                      margin: EdgeInsets.all(5),
+                      child: Center(
+                        child: Text(
+                          data[index]["nama"],
+                          style: blackTextFont.copyWith(fontSize: 16),
+                          overflow: TextOverflow.clip,
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          // image: DecorationImage(
+                          //     image: AssetImage("assets/ic_tickets.png"),
+                          //     fit: BoxFit.cover),
+                          borderRadius: BorderRadius.circular(5)),
+                    ),
                   ),
                 ),
                 Column(
                   children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      child: Text(
-                        "Hello workspace",
-                        style: blackTextFont.copyWith(fontSize: 16),
-                        overflow: TextOverflow.clip,
-                      ),
-                    ),
                     SizedBox(
                       height: 5,
                     ),
@@ -53,7 +65,7 @@ class HomePage extends StatelessWidget {
                       children: <Widget>[
                         Icon(Icons.location_on),
                         Text(
-                          "jl. mangga no 28",
+                          data[index]["alamat"],
                           style: blackTextFont.copyWith(fontSize: 14),
                         )
                       ],
@@ -65,7 +77,7 @@ class HomePage extends StatelessWidget {
                       children: <Widget>[
                         Icon(Icons.call),
                         Text(
-                          "085489345999",
+                          data[index]["telp"],
                           style: blackTextFont.copyWith(fontSize: 14),
                         )
                       ],
@@ -75,9 +87,9 @@ class HomePage extends StatelessWidget {
                     ),
                     Row(
                       children: <Widget>[
-                        Icon(Icons.timer),
+                        Icon(Icons.monetization_on),
                         Text(
-                          "08:00 - 17:00",
+                          data[index]["harga"].toString(),
                           style: blackTextFont.copyWith(fontSize: 14),
                         )
                       ],
@@ -87,8 +99,8 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
-        )
-      ],
+        );
+      },
     );
   }
 }

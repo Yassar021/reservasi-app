@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:reservasi_app/main_page.dart';
 import 'package:reservasi_app/shared/theme.dart';
+import 'services/api.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -7,12 +9,15 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  ApiService apiService = ApiService();
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   bool isEmailValid = false;
   bool isPasswordValid = false;
   bool isSigningIn = false;
+  bool proses = false;
 
   @override
   Widget build(BuildContext context) {
@@ -84,13 +89,51 @@ class _SignInPageState extends State<SignInPage> {
                         height: 46,
                         margin: EdgeInsets.only(top: 10),
                         child: RaisedButton(
-                          child: Text(
-                            " Masuk ",
-                            style: whiteTextFont.copyWith(fontSize: 16),
-                          ),
+                          child: proses
+                              ? CircularProgressIndicator()
+                              : Text(
+                                  " Masuk ",
+                                  style: whiteTextFont.copyWith(fontSize: 16),
+                                ),
                           color: mainColor,
                           onPressed: () {
-                            Navigator.pushNamed(context, '/mainPage');
+                            setState(() {
+                              proses = true;
+                            });
+                            apiService
+                                .login(emailController.text,
+                                    passwordController.text)
+                                .then((value) => {
+                                      setState(() {
+                                        proses = false;
+                                      }),
+                                      if (value["error"])
+                                        {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                              title: Text("Opps"),
+                                              content: SingleChildScrollView(
+                                                child: ListBody(
+                                                  children: <Widget>[
+                                                    Text(value["message"]),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        }
+                                      else
+                                        {
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MainPage(
+                                                        token: value["token"],
+                                                      )))
+                                        }
+                                    });
                           },
                         ),
                       ),

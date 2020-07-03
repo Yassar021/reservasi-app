@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:reservasi_app/shared/theme.dart';
 
+// ignore: must_be_immutable
 class ProfilePage extends StatelessWidget {
+  Map data;
+
+  ProfilePage({this.data});
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -29,7 +34,7 @@ class ProfilePage extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                "Anita Lefya",
+                data["name"],
                 style: whiteTextFont.copyWith(fontSize: 20),
               )
             ],
@@ -47,7 +52,7 @@ class ProfilePage extends StatelessWidget {
                 children: <Widget>[
                   Icon(Icons.location_on),
                   Text(
-                    "jl. mangga no 28, kec. rappocini, kota Makassar\n Sulawesi Selatan",
+                    data["alamat"],
                     style: blackTextFont.copyWith(fontSize: 14),
                   )
                 ],
@@ -59,7 +64,7 @@ class ProfilePage extends StatelessWidget {
                 children: <Widget>[
                   Icon(Icons.call),
                   Text(
-                    "085489345999",
+                    data["telp"],
                     style: blackTextFont.copyWith(fontSize: 14),
                   )
                 ],
@@ -71,7 +76,7 @@ class ProfilePage extends StatelessWidget {
                 children: <Widget>[
                   Icon(Icons.assignment_ind),
                   Text(
-                    "Perempuan",
+                    data["bio"],
                     style: blackTextFont.copyWith(fontSize: 14),
                   )
                 ],
@@ -85,21 +90,6 @@ class ProfilePage extends StatelessWidget {
                 Container(
                   width: 150,
                   height: 46,
-                  margin: EdgeInsets.only(left: 20, right: 10, top: 20),
-                  child: RaisedButton(
-                    child: Text(
-                      " Edit ",
-                      style: whiteTextFont.copyWith(fontSize: 16),
-                    ),
-                    color: mainColor,
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/editProfile');
-                    },
-                  ),
-                ),
-                Container(
-                  width: 150,
-                  height: 46,
                   margin: EdgeInsets.only(
                     left: 20,
                     top: 20,
@@ -110,7 +100,9 @@ class ProfilePage extends StatelessWidget {
                       style: whiteTextFont.copyWith(fontSize: 16),
                     ),
                     color: Colors.red[700],
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.popAndPushNamed(context, '/splashScreen');
+                    },
                   ),
                 ),
               ],
